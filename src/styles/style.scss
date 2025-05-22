@@ -1,0 +1,50 @@
+@use './mixins.scss' as m;
+@use './variables.scss' as v;
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+}
+
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+    color-scheme: light dark;
+    color: v.$text-color;
+    background-color: v.$background-color;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    --el-fill-color-blank: v.$background-color !important;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#app {
+    width: 1200px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+a {
+    @include m.a;
+}
+
+button {
+    @include m.button;
+}
+
+.el-input__inner {
+    background-color: v.$background-color !important;
+}
