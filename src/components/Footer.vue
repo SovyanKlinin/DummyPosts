@@ -39,12 +39,12 @@ const postsStore = usePostsStore();
     @include m.base-flex;
     flex-direction: column;
     gap: 20px;
-    width: 900px;
+    width: 90%;
     padding: 20px;
     border-radius: 10px;
     background-color: v.$background-color-dark;
 
-    & .footer__logo {
+    &__logo {
         cursor: pointer;
         transition: 0.5s;
 
@@ -53,12 +53,12 @@ const postsStore = usePostsStore();
         }
     }
 
-    & .footer__content {
+    &__content {
         @include m.base-flex;
         justify-content: space-around;
         width: 100%;
 
-        & .footer__social {
+        .footer__social {
             @include m.base-flex;
             gap: 20px;
 
@@ -77,4 +77,18 @@ const postsStore = usePostsStore();
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+    .footer {
+        &__content {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__copyright {
+            display: flex;
+        }
+    }
+}
+
 </style>

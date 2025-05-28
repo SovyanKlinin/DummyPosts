@@ -32,7 +32,7 @@ const searchInput = ref('');
     width: 100%;
     padding: 15px;
 
-    & .header__logo {
+    &__logo {
         cursor: pointer;
         transition: 0.5s;
 
@@ -41,9 +41,23 @@ const searchInput = ref('');
         }
     }
 
-    & .header__nav {
+    &__nav {
         @include m.base-flex;
         gap: 8px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+
+        &__logo {
+            margin-bottom: 10px;
+        }
+
+        &__nav {
+            flex-wrap: wrap;
+        }
     }
 }
 </style>

@@ -2,7 +2,7 @@
 
     <div class="posts">
         <h1>Posts</h1>
-        <div v-for="post in postsStore.posts" key="post.id" class="post">
+        <div v-for="post in postsStore.posts" key="post.id" class="posts__post">
             <h3 class="posts__post-title">{{ post.title }}</h3>
             <div class="posts__post-tags">
                 <div v-for="tags in post.tags" @click="postsStore.searchByTags(tags)" class="posts__post-tag">{{ tags }}
@@ -30,7 +30,7 @@
         </div>
         <div class="posts__post-pagination">
             <el-pagination background layout="prev, pager, next" @current-change="postsStore.fetchPosts"
-                v-model:current-page="postsStore.currentPage" :total="postsStore.totalNow" />
+                v-model:current-page="postsStore.currentPage" :pager-count="4" :total="postsStore.totalNow" />
         </div>
     </div>
 </template>
@@ -38,7 +38,6 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { usePostsStore } from '../stores/postsStore';
-import { ElNotification } from 'element-plus'
 
 const postsStore = usePostsStore();
 
@@ -47,11 +46,6 @@ onMounted(() => {
 })
 
 const deletePost = (id: number) => {
-    ElNotification({
-        title: 'Delete Post',
-        message: 'This post successfully deleted',
-        type: 'success',
-    });
     postsStore.deletePost(id);
 }
 
@@ -64,11 +58,11 @@ const deletePost = (id: number) => {
 .posts {
     padding: 20px;
 
-    & h1 {
+    h1 {
         margin-bottom: 30px;
     }
 
-    & .post {
+    &__post {
         @include m.base-flex;
         align-items: flex-start;
         flex-direction: column;
@@ -77,16 +71,16 @@ const deletePost = (id: number) => {
         margin-bottom: 20px;
         padding: 20px;
 
-        & .posts__post-title {
+        &-title {
             margin-bottom: 20px;
         }
 
-        & .posts__post-tags {
+        &-tags {
             @include m.base-flex;
             gap: 7px;
             margin-bottom: 7px;
 
-            & .posts__post-tag {
+            .posts__post-tag {
                 cursor: pointer;
                 color: v.$main-blue;
                 text-decoration: underline;
@@ -98,37 +92,37 @@ const deletePost = (id: number) => {
             }
         }
 
-        & .posts__post-body {
+        &-body {
             margin-bottom: 20px;
         }
 
-        & .posts__post-nav {
+        &-nav {
             @include m.base-flex;
             margin-bottom: 10px;
         }
 
-        & .posts__post-reaction {
+        &-reaction {
             @include m.base-flex;
             gap: 15px;
 
-            & .posts__post-likes {
+            .posts__post-likes {
                 @include m.base-flex;
                 gap: 10px;
             }
 
-            & .posts__post-dislikes {
-                @include m.base-flex;
-                gap: 10px;
-            }
-
-
-            & .posts__post-views {
+            .posts__post-dislikes {
                 @include m.base-flex;
                 gap: 10px;
             }
 
 
-            & .posts__post-icon {
+            .posts__post-views {
+                @include m.base-flex;
+                gap: 10px;
+            }
+
+
+            .posts__post-icon {
                 cursor: pointer;
                 color: v.$main-blue;
                 transition: 0.5s;
@@ -140,7 +134,7 @@ const deletePost = (id: number) => {
         }
     }
 
-    & .posts__post-pagination {
+    &-pagination {
             @include m.base-flex;
             width: 100%;
         }

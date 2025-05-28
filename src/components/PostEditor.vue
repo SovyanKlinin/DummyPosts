@@ -9,17 +9,16 @@
             </div>
             <div class="post-editor__tags">
                 <span>Post Tags</span>
-                <el-input v-model="tags" :rows="2" type="textarea"
-                    placeholder="Please enter tags through space" />
+                <el-input v-model="tags" :rows="2" type="textarea" placeholder="Please enter tags through space" />
             </div>
             <div class="post-editor__body">
                 <span>Post Body</span>
-                <el-input v-model="body" :rows="6" type="textarea"
-                    placeholder="Please enter body" />
+                <el-input v-model="body" :rows="6" type="textarea" placeholder="Please enter body" />
             </div>
             <div class="post-editor__nav">
                 <el-button @click="postsStore.fetchPosts" plain>Back to Main</el-button>
-                <el-button @click="postsStore.addNewPost(title, tags, body)" plain>Add Post</el-button>
+                <el-button v-show="id" @click="updatePost(id, title, body, tags)" plain>Edit Post</el-button>
+                <el-button v-show="!id" @click="addNewPost(title, tags, body)" plain>Add Post</el-button>
             </div>
         </div>
     </div>
@@ -29,12 +28,44 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { usePostsStore } from '../stores/postsStore';
+import { ElNotification } from 'element-plus'
 
 const postsStore = usePostsStore();
 
 const title = ref('');
 const tags = ref('');
 const body = ref('');
+const id = postsStore.post.id;
+
+if (id) {
+    const tagsString = postsStore.post.tags.join(" ")
+    title.value = postsStore.post.title;
+    body.value = postsStore.post.body;
+    tags.value = tagsString;
+} else if (!id) {
+    title.value = '';
+    body.value = '';
+    tags.value = '';
+}
+
+const updatePost = (id: number, title: string, body: string, tags: string) => {
+    postsStore.updatePost(id, title, body, tags);
+}
+
+const addNewPost = (title: string, body: string, tags: string) => {
+
+    if (title !== '' && body !== '' && tags !== '') {
+        postsStore.addNewPost(title, body, tags);
+    } else {
+        ElNotification({
+            title: 'Error',
+            message: "Fields don't filled",
+            type: 'error',
+        });
+    }
+}
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -47,18 +78,22 @@ const body = ref('');
 }
 
 .post-editor {
-    & h1 {
+    @include m.base-flex;
+    flex-direction: column;
+    width: 100%;
+
+    h1 {
         margin-bottom: 20px;
     }
 
-    & .post-editor__editor {
+    &__editor {
         @include m.base-flex;
         align-items: flex-start;
         flex-direction: column;
         gap: 20px;
         width: 360px;
 
-        & .post-editor__title {
+        .post-editor__title {
             @include m.base-flex;
             align-items: flex-start;
             flex-direction: column;
@@ -66,7 +101,7 @@ const body = ref('');
             width: 100%;
         }
 
-        & .post-editor__tags {
+        .post-editor__tags {
             @include m.base-flex;
             align-items: flex-start;
             flex-direction: column;
@@ -74,12 +109,21 @@ const body = ref('');
             width: 100%;
         }
 
-        & .post-editor__body {
+        .post-editor__body {
             @include m.base-flex;
             align-items: flex-start;
             flex-direction: column;
             gap: 6px;
             width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .post-editor {
+        &__editor {
+            width: 100%;
+            padding: 0 20px;
         }
     }
 }
