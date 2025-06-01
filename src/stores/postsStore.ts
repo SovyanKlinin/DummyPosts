@@ -2,6 +2,9 @@ import { defineStore } from "pinia";
 import router from "../router";
 import api from "../services/api";
 import { ElNotification } from 'element-plus'
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 interface Posts {
     id: number,
@@ -106,7 +109,10 @@ export const usePostsStore = defineStore('posts', {
 
         },
 
-        async createEditPost(id: number) {
+        async createEditPost() {
+
+            console.log(route)
+            const id = Number(route.params.id);
 
             if (id) {
 
@@ -114,15 +120,7 @@ export const usePostsStore = defineStore('posts', {
                 const data = res.data;
                 this.post = data;
 
-                router.push({
-                    name: 'EditPost',
-                    query: {
-                        id
-                    }
-                });
-
-            } else if (!id) {
-
+            } else {
 
                 this.post = {
                     id: 0,

@@ -21,14 +21,8 @@ const routes = [
     },
     
     {
-        path: '/post_editor/edit/',
-        name: 'EditPost',
-        component: PostCreateEdit
-    },
-
-    {
-        path: '/post_editor/create',
-        name: 'CreatePost',
+        path: '/post_editor/:id?',
+        name: 'PostCreateEdit',
         component: PostCreateEdit
     },
     

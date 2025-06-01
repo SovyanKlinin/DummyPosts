@@ -4,7 +4,7 @@
             <h2>DummyPosts</h2>
         </div> 
         <div class="header__nav">
-            <el-button @click="postsStore.createEditPost(0)" plain>Add post</el-button>
+            <el-button @click="createEditPost" plain>Add post</el-button>
             <el-button style="margin-left: 20px;" @click="postsStore.searchByText(searchInput)" plain>Search</el-button>
             <el-input v-model="searchInput"
             style="width: 240px; color: black" placeholder="Search on posts" :prefix-icon="Search" />
@@ -16,9 +16,19 @@
 import { ref } from 'vue';
 import { Search } from '@element-plus/icons-vue'
 import { usePostsStore } from '../stores/postsStore';
+import router from "../router";
 
 const postsStore = usePostsStore();
 const searchInput = ref('');
+
+const createEditPost = () => {
+
+    router.push({
+        name: 'PostCreateEdit',
+    });
+
+    postsStore.createEditPost();
+}
 
 </script>
 

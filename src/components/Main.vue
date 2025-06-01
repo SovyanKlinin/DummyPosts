@@ -10,7 +10,7 @@
             </div>
             <div class="posts__post-body">{{ post.body }}</div>
             <div class="posts__post-nav">
-                <el-button @click="postsStore.createEditPost(post.id)" plain>Edit Post</el-button>
+                <el-button @click="createEditPost(post.id)" plain>Edit Post</el-button>
                 <el-button @click="deletePost(post.id)" plain>Delete</el-button>
             </div>
             <div class="posts__post-reaction">
@@ -38,6 +38,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { usePostsStore } from '../stores/postsStore';
+import router from "../router";
 
 const postsStore = usePostsStore();
 
@@ -47,6 +48,18 @@ onMounted(() => {
 
 const deletePost = (id: number) => {
     postsStore.deletePost(id);
+}
+
+const createEditPost = (id: number) => {
+
+    router.push({
+        name: 'PostCreateEdit',
+        query: {
+            id
+        }
+    });
+
+    postsStore.createEditPost()
 }
 
 </script>
@@ -135,8 +148,8 @@ const deletePost = (id: number) => {
     }
 
     &-pagination {
-            @include m.base-flex;
-            width: 100%;
-        }
+        @include m.base-flex;
+        width: 100%;
+    }
 }
 </style>
