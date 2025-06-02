@@ -2,12 +2,12 @@
     <header class="header">
         <div @click="postsStore.fetchPosts" class="header__logo">
             <h2>DummyPosts</h2>
-        </div> 
+        </div>
         <div class="header__nav">
             <el-button @click="createEditPost" plain>Add post</el-button>
             <el-button style="margin-left: 20px;" @click="postsStore.searchByText(searchInput)" plain>Search</el-button>
-            <el-input v-model="searchInput"
-            style="width: 240px; color: black" placeholder="Search on posts" :prefix-icon="Search" />
+            <el-input v-model="searchInput" style="width: 240px; color: black" placeholder="Search on posts"
+                :prefix-icon="Search" />
         </div>
     </header>
 </template>
@@ -23,11 +23,16 @@ const searchInput = ref('');
 
 const createEditPost = () => {
 
+    postsStore.post = {
+        id: 0,
+        title: '',
+        body: '',
+        tags: []
+    };
+
     router.push({
         name: 'PostCreateEdit',
     });
-
-    postsStore.createEditPost();
 }
 
 </script>

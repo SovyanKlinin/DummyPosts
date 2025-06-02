@@ -39,6 +39,7 @@
 import { onMounted } from 'vue';
 import { usePostsStore } from '../stores/postsStore';
 import router from "../router";
+import api from "../services/api";
 
 const postsStore = usePostsStore();
 
@@ -50,7 +51,13 @@ const deletePost = (id: number) => {
     postsStore.deletePost(id);
 }
 
-const createEditPost = (id: number) => {
+const createEditPost = async (id: number) => {
+
+    if (id) {
+        const res = await api.idSearch(id);
+        const data = res.data;
+        postsStore.post = data;
+    }
 
     router.push({
         name: 'PostCreateEdit',
@@ -59,7 +66,6 @@ const createEditPost = (id: number) => {
         }
     });
 
-    postsStore.createEditPost()
 }
 
 </script>

@@ -17,8 +17,8 @@
             </div>
             <div class="post-editor__nav">
                 <el-button @click="postsStore.fetchPosts" plain>Back to Main</el-button>
-                <el-button v-show="id" @click="updatePost(id, title, body, tags)" plain>Edit Post</el-button>
-                <el-button v-show="!id" @click="addNewPost(title, tags, body)" plain>Add Post</el-button>
+                <el-button v-show="routeId" @click="updatePost(id, title, body, tags)" plain>Edit Post</el-button>
+                <el-button v-show="!routeId" @click="addNewPost(title, tags, body)" plain>Add Post</el-button>
             </div>
         </div>
     </div>
@@ -26,27 +26,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { usePostsStore } from '../stores/postsStore';
+import { onMounted, ref } from 'vue';
+import { usePostsStore } from '../stores/postsStore'
 import { ElNotification } from 'element-plus'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const postsStore = usePostsStore();
 
 const title = ref('');
 const tags = ref('');
 const body = ref('');
 const id = postsStore.post.id;
+const routeId = Number(route.query.id);
 
-if (id) {
-    const tagsString = postsStore.post.tags.join(" ")
-    title.value = postsStore.post.title;
-    body.value = postsStore.post.body;
-    tags.value = tagsString;
-} else if (!id) {
-    title.value = '';
-    body.value = '';
-    tags.value = '';
-}
+onMounted(async () => {
+
+    if (routeId) {
+
+        await postsStore.createEditPost(routeId)
+        const tagsString = postsStore.post.tags.join(" ")
+        title.value = postsStore.post.title;
+        body.value = postsStore.post.body;
+        tags.value = tagsString;
+    } else if (!routeId) {
+        title.value = '';
+        body.value = '';
+        tags.value = '';
+    }
+})
 
 const updatePost = (id: number, title: string, body: string, tags: string) => {
     postsStore.updatePost(id, title, body, tags);
@@ -64,7 +72,6 @@ const addNewPost = (title: string, body: string, tags: string) => {
         });
     }
 }
-
 
 </script>
 
