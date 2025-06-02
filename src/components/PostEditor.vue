@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import { usePostsStore } from '../stores/postsStore'
 import { ElNotification } from 'element-plus'
 import { useRoute } from 'vue-router'
@@ -40,21 +40,24 @@ const body = ref('');
 const id = postsStore.post.id;
 const routeId = Number(route.query.id);
 
-onMounted(async () => {
+watch(
+    () => route.query.id,
+    async newId => {
+        const id = Number(newId)
 
-    if (routeId) {
-
-        await postsStore.createEditPost(routeId)
-        const tagsString = postsStore.post.tags.join(" ")
-        title.value = postsStore.post.title;
-        body.value = postsStore.post.body;
-        tags.value = tagsString;
-    } else if (!routeId) {
-        title.value = '';
-        body.value = '';
-        tags.value = '';
-    }
-})
+        if (!isNaN(id) && id > 0) {
+            await postsStore.createEditPost(id)
+            title.value = postsStore.post.title
+            body.value = postsStore.post.body
+            tags.value = postsStore.post.tags.join(' ')
+        } else {
+            title.value = ''
+            body.value = ''
+            tags.value = ''
+        }
+    },
+    { immediate: true }
+)
 
 const updatePost = (id: number, title: string, body: string, tags: string) => {
     postsStore.updatePost(id, title, body, tags);

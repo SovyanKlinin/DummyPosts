@@ -23,13 +23,6 @@ const searchInput = ref('');
 
 const createEditPost = () => {
 
-    postsStore.post = {
-        id: 0,
-        title: '',
-        body: '',
-        tags: []
-    };
-
     router.push({
         name: 'PostCreateEdit',
     });

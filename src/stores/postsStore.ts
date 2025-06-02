@@ -108,9 +108,9 @@ export const usePostsStore = defineStore('posts', {
         },
 
         async createEditPost(id: number) {
-                const res = await api.idSearch(id);
-                const data = res.data;
-                this.post = data;
+            const res = await api.idSearch(id);
+            const data = res.data;
+            this.post = data;
         },
 
         async addNewPost(title: string, tags: string, body: string) {
